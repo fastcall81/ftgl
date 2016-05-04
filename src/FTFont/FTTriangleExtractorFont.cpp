@@ -36,15 +36,30 @@
 //
 
 
-FTTriangleExtractorFont::FTTriangleExtractorFont(char const *fontFilePath, std::vector<float>& triangles) :
-    FTFont(new FTTriangleExtractorFontImpl(this, fontFilePath, triangles))
+FTTriangleExtractorFont::FTTriangleExtractorFont(char const *fontFilePath) :
+    FTFont(new FTTriangleExtractorFontImpl(this, fontFilePath))
 {}
 
 
 FTTriangleExtractorFont::FTTriangleExtractorFont(const unsigned char *pBufferBytes,
-                             size_t bufferSizeInBytes, std::vector<float>& triangles) :
-    FTFont(new FTTriangleExtractorFontImpl(this, pBufferBytes, bufferSizeInBytes, triangles))
+                             size_t bufferSizeInBytes) :
+    FTFont(new FTTriangleExtractorFontImpl(this, pBufferBytes, bufferSizeInBytes))
 {}
+
+void FTTriangleExtractorFont::CleanResultContainer()
+{
+	dynamic_cast<FTTriangleExtractorFontImpl*>(impl)->triangles.clear();
+}
+size_t FTTriangleExtractorFont::GetResultContainerSize() const
+{
+	return dynamic_cast<FTTriangleExtractorFontImpl*>(impl)->triangles.size();
+}
+
+void FTTriangleExtractorFont::GetResultContainer(float *buffer) const
+{
+	std::vector<float> *triangles = &dynamic_cast<FTTriangleExtractorFontImpl*>(impl)->triangles;
+	std::memcpy(buffer, &((*triangles)[0]), triangles->size() * sizeof(float));
+}
 
 
 FTTriangleExtractorFont::~FTTriangleExtractorFont()
@@ -60,7 +75,7 @@ FTGlyph* FTTriangleExtractorFont::MakeGlyph(FT_GlyphSlot ftGlyph)
     }
 
     return new FTTriangleExtractorGlyph(ftGlyph, myimpl->outset,
-                              myimpl->triangles_);
+                              &myimpl->triangles);
 }
 
 //
@@ -68,21 +83,19 @@ FTGlyph* FTTriangleExtractorFont::MakeGlyph(FT_GlyphSlot ftGlyph)
 //
 
 
-FTTriangleExtractorFontImpl::FTTriangleExtractorFontImpl(FTFont *ftFont, const char* fontFilePath, std::vector<float>& triangles)
+FTTriangleExtractorFontImpl::FTTriangleExtractorFontImpl(FTFont *ftFont, const char* fontFilePath)
 : FTFontImpl(ftFont, fontFilePath),
-  outset(0.0f),
-  triangles_(triangles)
+  outset(0.0f)
 {
-    load_flags = FT_LOAD_NO_HINTING;
+    load_flags = FT_LOAD_NO_HINTING; 
 }
 
 
 FTTriangleExtractorFontImpl::FTTriangleExtractorFontImpl(FTFont *ftFont,
                                      const unsigned char *pBufferBytes,
-                                     size_t bufferSizeInBytes, std::vector<float>& triangles)
+                                     size_t bufferSizeInBytes)
 : FTFontImpl(ftFont, pBufferBytes, bufferSizeInBytes),
-  outset(0.0f),
-  triangles_(triangles)
+  outset(0.0f)
 {
     load_flags = FT_LOAD_NO_HINTING;
 }

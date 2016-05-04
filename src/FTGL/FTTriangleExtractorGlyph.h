@@ -53,7 +53,7 @@ class FTGL_EXPORT FTTriangleExtractorGlyph : public FTGlyph
          *                       <code>true</code> turns ON display lists.
          *                       <code>false</code> turns OFF display lists.
          */
-        FTTriangleExtractorGlyph(FT_GlyphSlot glyph, float outset, std::vector<float>& triangles);
+        FTTriangleExtractorGlyph(FT_GlyphSlot glyph, float outset, std::vector<float> *triangles);
 
         /**
          * Destructor

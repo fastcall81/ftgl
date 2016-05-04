@@ -37,10 +37,10 @@ class FTTriangleExtractorFontImpl : public FTFontImpl
     friend class FTTriangleExtractorFont;
 
     protected:
-        FTTriangleExtractorFontImpl(FTFont *ftFont, const char* fontFilePath, std::vector<float>& triangles);
+        FTTriangleExtractorFontImpl(FTFont *ftFont, const char* fontFilePath);
 
         FTTriangleExtractorFontImpl(FTFont *ftFont, const unsigned char *pBufferBytes,
-                          size_t bufferSizeInBytes, std::vector<float>& triangles);
+                          size_t bufferSizeInBytes);
 
         /**
          * Set the outset distance for the font. Only implemented by
@@ -64,8 +64,7 @@ class FTTriangleExtractorFontImpl : public FTFontImpl
          * The outset distance for the font.
          */
         float outset;
-
-        std::vector<float>& triangles_;
+        std::vector<float> triangles;
 
         /* Internal generic Render() implementation */
         template <typename T>

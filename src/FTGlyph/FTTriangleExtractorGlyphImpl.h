@@ -36,7 +36,7 @@ class FTTriangleExtractorGlyphImpl : public FTGlyphImpl
 
     public:
         FTTriangleExtractorGlyphImpl(FT_GlyphSlot glyph, float outset,
-                           std::vector<float>& triangles);
+                           std::vector<float> *triangles);
 
         virtual ~FTTriangleExtractorGlyphImpl();
 
@@ -52,7 +52,7 @@ class FTTriangleExtractorGlyphImpl : public FTGlyphImpl
         unsigned int hscale, vscale;
         FTVectoriser *vectoriser;
         float outset;
-        std::vector<float>& triangles_;
+        std::vector<float> *triangles;
 };
 
 #endif  //  __FTTriangleExtractorGlyphImpl__

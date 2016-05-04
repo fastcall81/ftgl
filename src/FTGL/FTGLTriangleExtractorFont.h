@@ -50,7 +50,7 @@ class FTGL_EXPORT FTTriangleExtractorFont : public FTFont
          * @param fontFilePath  font file path.
          * @param triangles     the container to store the triangle data.
          */
-        FTTriangleExtractorFont(const char* fontFilePath, std::vector<float>& triangles);
+        FTTriangleExtractorFont(const char* fontFilePath);
 
         /**
          * Open and read a font from a buffer in memory. Sets Error flag.
@@ -62,12 +62,16 @@ class FTGL_EXPORT FTTriangleExtractorFont : public FTFont
          * @param triangles     the container to store the triangle data.
          */
         FTTriangleExtractorFont(const unsigned char *pBufferBytes,
-                      size_t bufferSizeInBytes, std::vector<float>& triangles);
+                      size_t bufferSizeInBytes);
 
         /**
          * Destructor
          */
         ~FTTriangleExtractorFont();
+
+		void CleanResultContainer();
+		size_t GetResultContainerSize() const;
+		void GetResultContainer(float *buffer) const;
 
     protected:
         /**

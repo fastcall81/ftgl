@@ -39,7 +39,7 @@
 
 
 FTTriangleExtractorGlyph::FTTriangleExtractorGlyph(FT_GlyphSlot glyph, float outset,
-                               std::vector<float>& triangles) :
+                               std::vector<float> *triangles) :
     FTGlyph(new FTTriangleExtractorGlyphImpl(glyph, outset, triangles))
 {}
 
@@ -61,9 +61,9 @@ const FTPoint& FTTriangleExtractorGlyph::Render(const FTPoint& pen, int renderMo
 
 
 FTTriangleExtractorGlyphImpl::FTTriangleExtractorGlyphImpl(FT_GlyphSlot glyph, float _outset,
-                                       std::vector<float>& triangles)
+                                       std::vector<float> *triangles)
 :   FTGlyphImpl(glyph),
-    triangles_(triangles)
+    triangles(triangles)
 {
     if(ft_glyph_format_outline != glyph->format)
     {
@@ -114,35 +114,37 @@ const FTPoint& FTTriangleExtractorGlyphImpl::RenderImpl(const FTPoint& pen,
         switch(polygonType)
         {
             case GL_TRIANGLE_STRIP:
-                AddVertex(pen, subMesh->Point(0));
-                for(unsigned int i = 0; i < subMesh->PointCount(); ++i)
-                    AddVertex(pen, subMesh->Point(i));
-                AddVertex(pen, subMesh->Point(subMesh->PointCount() - 1));
-                break;
+			{
+				int vertex1 = 2;
+				int vertex2 = 1;
+				for (unsigned int i = 2; i < subMesh->PointCount(); i++)
+				{
+					AddVertex(pen, subMesh->Point(i));
+					AddVertex(pen, subMesh->Point(i - vertex1));
+					AddVertex(pen, subMesh->Point(i - vertex2));
+
+					std::swap(vertex1, vertex2);
+				}
+				break;
+			}
             case GL_TRIANGLES:
                 assert(subMesh->PointCount() % 3 == 0);
                 for(unsigned int i = 0; i < subMesh->PointCount(); i += 3)
                 {
                     AddVertex(pen, subMesh->Point(i));
-                    AddVertex(pen, subMesh->Point(i));
                     AddVertex(pen, subMesh->Point(i+1));
-                    AddVertex(pen, subMesh->Point(i+2));
                     AddVertex(pen, subMesh->Point(i+2));
                 }
                 break;
             case GL_TRIANGLE_FAN:
             {
                 const FTPoint& centerPoint = subMesh->Point(0);
-                AddVertex(pen, centerPoint);
-
-                for(unsigned int i = 1; i < subMesh->PointCount()-1; ++i)
+                for(unsigned int i = 1; i < subMesh->PointCount() - 1; i++ )
                 {
-                    AddVertex(pen, centerPoint);
+					AddVertex(pen, centerPoint);
                     AddVertex(pen, subMesh->Point(i));
                     AddVertex(pen, subMesh->Point(i+1));
-                    AddVertex(pen, centerPoint);
                 }
-                AddVertex(pen, centerPoint);
                 break;
             }
             default:
@@ -158,8 +160,8 @@ const FTPoint& FTTriangleExtractorGlyphImpl::RenderImpl(const FTPoint& pen,
 
 void FTTriangleExtractorGlyphImpl::AddVertex(const FTPoint& pen, const FTPoint& point)
 {
-    triangles_.push_back(pen.Xf() + point.Xf() / 64.0);
-    triangles_.push_back(pen.Yf() + point.Yf() / 64.0);
-    triangles_.push_back(pen.Zf());
+    triangles->push_back(pen.Xf() + point.Xf() / 64.0);
+    triangles->push_back(pen.Yf() + point.Yf() / 64.0);
+    triangles->push_back(pen.Zf());
 }
 
