@@ -67,8 +67,10 @@ ftgl_headers = \
     FTGL/FTGLPixmapFont.h \
     FTGL/FTGLPolygonFont.h \
     FTGL/FTGLTextureFont.h \
+    FTGL/FTGLTriangleExtractorFont.h \
     FTGL/FTLayout.h \
     FTGL/FTSimpleLayout.h \
+    FTGL/FTTriangleExtractorGlyph.h \
     ${NULL}
 
 ftglyph_sources = \
