@@ -61,6 +61,7 @@ SET(ftgl_headers
     FTGL/FTGLTriangleExtractorFont.h
     FTGL/FTLayout.h
     FTGL/FTSimpleLayout.h
+    FTGL/FTTriangleExtractorGlyph.h
 )
 
 SET(ftglyph_sources
