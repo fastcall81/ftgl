@@ -111,6 +111,8 @@ ftfont_sources = \
     FTFont/FTPolygonFontImpl.h \
     FTFont/FTTextureFont.cpp \
     FTFont/FTTextureFontImpl.h \
+    FTFont/FTTriangleExtractorFont.cpp \
+    FTFont/FTTriangleExtractorFontImpl.h \
     $(NULL)
 
 ftlayout_sources = \
