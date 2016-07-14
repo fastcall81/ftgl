@@ -131,7 +131,7 @@ namespace FTGL
 #else
     // Compiler that is not MS Visual C++.
     // Ensure that the export symbol is defined (and blank)
-    #define FTGL_EXPORT
+    #define FTGL_EXPORT __attribute__((visibility("default")))
 #endif
 
 #include <FTGL/FTPoint.h>

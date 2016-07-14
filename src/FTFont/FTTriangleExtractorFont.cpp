@@ -29,6 +29,7 @@
 
 #include "FTInternals.h"
 #include "FTTriangleExtractorFontImpl.h"
+#include <cstring>
 
 
 //
