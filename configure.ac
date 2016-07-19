@@ -40,6 +40,9 @@ AM_PROG_CC_C_O
 
 FTGL_CPP_FUNC
 
+# add c++11 support
+CXXFLAGS="$CXXFLAGS -std=c++0x"
+
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADER([stdlib.h])
